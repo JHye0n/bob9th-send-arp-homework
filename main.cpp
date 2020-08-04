@@ -80,8 +80,8 @@ int main(int argc, char* argv[]){
     	}
 
     	char *dev = argv[1];
-		char* sip = argv[2];
-		char* tip = argv[3];
+		char* sip = argv[2]; //sender ip(char *)
+		char* tip = argv[3]; //target ip(char *)
 		char *ipaddr;
    		char errbuf[PCAP_ERRBUF_SIZE];
     	pcap_t *handle;
