@@ -79,18 +79,18 @@ int main(int argc, char* argv[]){
         	return 0;
     	}
 
-    char *dev = argv[1];
-	char* sip = argv[2];
-	char* tip = argv[3];
+    	char *dev = argv[1];
+	char *sip = argv[2];
+	char *tip = argv[3];
 	char *ipaddr;
    	char errbuf[PCAP_ERRBUF_SIZE];
-    pcap_t *handle;
+    	pcap_t *handle;
 
-    handle = pcap_open_live(dev, BUFSIZ, 1, 1000, errbuf);
-    if(handle == nullptr){
-        fprintf(stderr, "device open error %s(%s)\n",dev, errbuf);
-        return 0;
-    }
+   	handle = pcap_open_live(dev, BUFSIZ, 1, 1000, errbuf);
+   	if(handle == nullptr){
+        	fprintf(stderr, "device open error %s(%s)\n",dev, errbuf);
+        	return 0;
+    	}
 
 	EthArpPacket packet;
 
