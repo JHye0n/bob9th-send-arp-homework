@@ -137,7 +137,7 @@ int main(int argc, char* argv[]){
 		arp_hddr = (struct ArpHdr *)(packet + sizeof(struct EthHdr));
 
 		/* gilgil code review update */
-		if(ntohs(eth_hdr->type_) == 0x0806 && ntohs(arp_hddr->op_) == ArpHdr::Reply){
+		if(ntohs(eth_hdr->type_) == EthHdr::Arp && ntohs(arp_hddr->op_) == ArpHdr::Reply){
 			EthArpPacket packet;
 			packet.eth_.dmac_ = eth_hdr->smac_;
 			packet.eth_.smac_ = Mac(getmymac); // getmacaddr -> getmymac
