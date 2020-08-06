@@ -20,15 +20,10 @@ struct EthArpPacket{
 };
 #pragma pack(pop)
 
-struct ArpHdr *arp_hddr;
-
-//int getmacaddr(char *dev)
-Mac getmacaddr(char *dev) // gilgil update
-//char* getmacaddr(char *dev)
+Mac getmacaddr(char *dev) // gilgil code review update
 {
 	int fd;
 	struct ifreq ifr;
-	//uint8_t getmymac[size];
 
 	fd = socket(AF_INET, SOCK_DGRAM, 0);
 	
@@ -94,9 +89,7 @@ int main(int argc, char* argv[]){
 
 	EthArpPacket packet;
 
-	getmacaddr(dev); // get my mac address;
-	
-	//ipaddr = getmyipaddr(dev); //get my ip address!
+	getmacaddr(dev); // get my mac addr
 
 	packet.eth_.dmac_ = Mac("ff:ff:ff:ff:ff:ff"); // victim , mac(broadcast)
 	packet.eth_.smac_ = Mac(getmymac); // getmacaddr -> getmymac
